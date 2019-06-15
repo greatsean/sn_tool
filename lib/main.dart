@@ -4,6 +4,7 @@
 // [GlobalKey] is used here to identify the [Form] and validate input.
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:sn_tool/screens/TabHome.dart';
 import 'package:sn_tool/screens/TabTxj.dart';
 import 'package:sn_tool/screens/TabHelp.dart';
@@ -36,16 +37,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
-      tabBar: CupertinoTabBar(items: [
-        BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.home), title: Text('首页')),
-        BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.delete), title: Text('淘新机')),
-        BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.share), title: Text('客服')),
-        BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.settings), title: Text('账户')),
-      ]),
+      tabBar: CupertinoTabBar(
+        currentIndex: 1,
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.home), title: Text('首页')),
+          BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.info), title: Text('淘新机')),
+          BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.group_solid), title: Text('客服')),
+          BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.profile_circled), title: Text('账户')),
+        ],
+      ),
       tabBuilder: (context, index) {
         switch (index) {
           case 0:
@@ -56,6 +60,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             return TabHelp();
           case 3:
             return TabMe();
+          default:
+            return TabHome();
         }
       },
     );
