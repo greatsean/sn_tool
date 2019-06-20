@@ -23,7 +23,29 @@ dependencies:
   http : 0.12.0+2
   flutter_webview_plugin: ^0.3.5
 #  flutter_webview_plugin: ^0.2.1+2
+
+  #网络
   dio : 2.1.7
+  #toast
+#  fluttertoast: ^2.0.9
+  #事件
+#  event_bus: ^1.0.1
+#  #本地存储
+#  shared_preferences: ^0.4.3
+#  #获取存储路径
+#  path_provider: ^0.4.1
+#  #loading indicators
+#  flutter_spinkit: ^3.0.0
+#  #应用信息
+#  package_info: ^0.3.2
+#  #打开连接
+#  url_launcher: ^4.0.3
+#  #image cache
+#  cached_network_image: ^0.5.1
+  #安装
+#  install_plugin: ^1.0.0
+  #权限
+#  permission_handler: ^2.1.2
 
 dev_dependencies:
   flutter_test:

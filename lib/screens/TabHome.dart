@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:sn_tool/util/http_util.dart';
 import 'package:sn_tool/widgets/category_item.dart';
+import 'package:sn_tool/widgets/tag_item.dart';
 
 class TabHome extends StatefulWidget {
   @override
@@ -14,6 +15,7 @@ class TabHome extends StatefulWidget {
 class _TabHomeState extends State<TabHome> {
   var banner = [];
   var category = [];
+  var tagList = [];
 
   _loadData() async {
     var bannerJson = (await HttpUtil.get(
@@ -29,18 +31,16 @@ class _TabHomeState extends State<TabHome> {
       setState(() {
         banner = bannerJson['result']['top_position'];
         category = catgoryJson['result'];
+        tagList = tagGoodsJson['result'];
       });
     }
   }
 
   _genCategory() {
-    List<Widget> cateWidgets = [];
-    category.forEach((e) {
-      cateWidgets.add(CategoryItem(
-          iconUrl: e['categoryIcoPath'], titleTxt: e['categoryName']));
-    });
-
-    return cateWidgets;
+    return category
+        .map((e) => CategoryItem(
+            iconUrl: e['categoryIcoPath'], titleTxt: e['categoryName']))
+        .toList();
   }
 
   @override
@@ -49,42 +49,62 @@ class _TabHomeState extends State<TabHome> {
     this._loadData();
   }
 
+  _buildBanner() {
+    return SizedBox(
+      child: Swiper(
+        itemCount: banner.length,
+        itemBuilder: (context, index) {
+          return Image.network(
+            banner[index]['bannerImg'],
+            fit: BoxFit.fitWidth,
+          );
+        },
+        pagination: SwiperPagination(),
+        autoplay: true,
+        duration: 1000,
+        autoplayDelay: 3000,
+      ),
+      width: MediaQuery.of(context).size.width,
+      height: 174,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context));
-
+    print('bullllll');
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           middle: Text('淘新机'),
         ),
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              child: Swiper(
-                itemCount: banner.length,
-                itemBuilder: (context, index) {
-                  return Image.network(
-                    banner[index]['bannerImg'],
-                    fit: BoxFit.fitWidth,
+        child: Container(
+          color: Theme.of(context).dividerColor,
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: ListView(
+            physics: AlwaysScrollableScrollPhysics(),
+            children: <Widget>[
+              _buildBanner(),
+              Container(
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: _genCategory(),
+                ),
+              ),
+              ListView(
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                children: this.tagList.map((item) {
+                  print(item['zmSpuDTOList'].runtimeType);
+                  return TagItem(
+                    name: item['tagName'],
+//                            bannerImgUrl: item['banner'] ?? ['bannerImg'],
+//                            bannerLinkUrl: item['banner'] ?? ['leaseChannelId'],
+                    goodsList: item['zmSpuDTOList'],
                   );
-                },
-                pagination: SwiperPagination(),
-                autoplay: true,
-                duration: 1000,
-                autoplayDelay: 3000,
-              ),
-              width: MediaQuery.of(context).size.width,
-              height: 174,
-            ),
-            SizedBox(
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: _genCategory(),
-              ),
-              width: MediaQuery.of(context).size.width,
-              height: 174,
-            ),
-          ],
+                }).toList(),
+              )
+            ],
+          ),
         ));
   }
 }

@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
     return CupertinoApp(
       title: _title,
       home: MyStatefulWidget(),
-      color: Color.fromARGB(255, 255, 255, 255),
     );
   }
 }
@@ -38,7 +37,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
-        currentIndex: 1,
+        currentIndex: 0,
         items: [
           BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.home), title: Text('首页')),
